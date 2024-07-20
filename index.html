@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <link rel="stylesheet" href="calculator.css">
+    <link rel="icon" href="https://static.vecteezy.com/system/resources/thumbnails/011/023/575/small/hand-drawn-panda-face-illustration-on-transparent-background-for-template-design-png.png" type="image/icon type">
+</head>
+<body>
+    <div class="main">
+        <h3>CALCULATOR</h3>
+        <input type="text" id ='exit'>
+        <div class="btn">
+            <input style="position: absolute; margin: 2.6cm 0cm 0cm 7.5cm;" type="button" value="AC" onclick="clearall()">
+            <br>
+            <input type="button" value="7" onclick="userinput('7')">
+            <input type="button" value="8" onclick="userinput('8')"">
+            <input type="button" value="9" onclick="userinput('9')">
+            <input class="button1" type="button" value="." onclick="userinput('.')">
+            <br>
+            <input type="button" value="4" onclick="userinput('4')">
+            <input type="button" value="5" onclick="userinput('5')">
+            <input type="button" value="6" onclick="userinput('6')">
+            <input class="button1" type="button" value="&divide;" onclick="userinput('/')">
+            <br>
+            <input type="button" value="1" onclick="userinput('1')">
+            <input type="button" value="2" onclick="userinput('2')">
+            <input type="button" value="3" onclick="userinput('3')">
+            <input class="button1" type="button" value="*" onclick="userinput('*')">
+            <br>
+            <input type="button" value="0" onclick="userinput('0')">
+            <input type="button" value="+" onclick="userinput('+')">
+            <input type="button" value="-" onclick="userinput('-')">
+            <input class="button1" type="button" value="=" onclick="calculate()">
+            <div>
+                
+            </div>
+        </div>   
+    <script>
+    let userdata = document.getElementById('exit');
+    function userinput(num){
+    userdata.value+=num;
+    }
+    function calculate() {
+        const input = userdata.value;
+        const operators = "+-*/";
+        const operatorStack = [];
+        const numberStack = [];
+
+    let currentNumber = "";
+    let lastOperator = "+";
+
+    for (let i = 0; i < input.length; i++) {
+        const char = input[i];
+
+        if (operators.includes(char)) {
+            operatorStack.push(char);
+            numberStack.push(parseFloat(currentNumber));
+            currentNumber = "";
+            lastOperator = char;
+        } else if (!isNaN(char) || char == ".") {
+            currentNumber += char;
+        }
+    }
+
+    numberStack.push(parseFloat(currentNumber));
+
+    let result = 0;
+    for (let i = 0; i < numberStack.length; i++) {
+        const number = numberStack[i];
+        const operator = operatorStack[i - 1] || "+";
+
+        switch (operator) {
+            case "+":
+                result += number;
+                break;
+            case "-":
+                result -= number;
+                break;
+            case "*":
+                result *= number;
+                break;
+            case "/":
+                if (number !== 0) {
+                    result /= number;
+                } else {
+                    alert("Division by zero is not allowed.");
+                    clearall();
+                    return;
+                 }
+                  break;
+            }
+        }
+
+        userdata.value = result;
+    }
+
+    function clearall() {
+        userdata.value = "";
+    }
+    </script>
+</body>
+</html>
